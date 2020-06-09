@@ -93,8 +93,8 @@ listc = []
 for x in range(len(words)):
     if words[x] in dict:
         if wordsb[x] in dico:
-            y = dict[words[x]]
-            z = dico[wordsb[x]]
+            y = dict.pop(words[x])
+            z = dico.pop(wordsb[x])
             print(y, z)
             listc.append(y)
             listc.append(z)
