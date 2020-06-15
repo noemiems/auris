@@ -1,6 +1,5 @@
 import pandas as pd #Import Pandas
 import re #Import Regex
-from collections import defaultdict
 
 pdlex = pd.read_csv("Lexique383.tsv", sep='\t') #Read the document
 pdlex.head() #Read the head of the document
@@ -32,6 +31,41 @@ freqfilmlist = freqfilmlist[1:]
 freqbooklist = freqbooklist[1:]
 ipalist = ipalist[1:]
 
+
+userinputa = input('IPA character = ') #User inputs the first IPA character to be compared
+userinputb = input('IPA character 2 = ') #User inputs the second IPA character to be compared
+userlength = input('How many syllables max = ')
+userfreq = input('Minimum frequency: ') #User inputs the frequency range 1-5
+userfreq = int(userfreq)
+
+floatlist = []
+for i in freqfilmlist: #I converted the frequencies that were strings to floats
+    try:
+        floatlist.append(float(i))
+    except ValueError:
+        pass
+
+userfreqlist = []
+for x in range(len(floatlist)): #If the frequency belongs to one of the range, it is placed in the corresponding list
+    if floatlist[x] >= userfreq:
+       userfreqlist.append(floatlist[x])
+
+strfreqlist = []
+for x in range(len(userfreqlist)):
+    strfreqlist.append(str(userfreqlist[x]))
+
+wordfreq = []
+
+for x in range(len(wordlist)): #I made a list of lists composed of each word and its corresponding frequency
+    wordfreq.append([wordlist[x], freqfilmlist[x]])
+
+newwordlist = []
+
+for x in wordfreq: #It looks at the values in alist, compares it to the values in blist, and if it finds it, appends the word to newlist so we are left with only words belonging to the frequency range we want
+    for y in range(len(x)):
+        if x[y] in strfreqlist:
+            newwordlist.append(x[0])
+
 for x in range(len(ipalist)): #This switches most characters used in Lexique to IPA characters except for nasal vowels
     def ipa(a, b):
         if a in ipalist[x]:
@@ -43,127 +77,64 @@ for x in range(len(ipalist)): #This switches most characters used in Lexique to 
     ipa('°', 'ə')
     ipa('9', 'œ')
 
-
-lista = []
-listb = []
-listf = []
-listg = []
-
-alist = []
-
-for x in range(len(wordlist)): #I made a list of lists composed of each word and its corresponding frequency
-    alist.append([wordlist[x], freqfilmlist[x]])
-
-floatlist = []
-for i in freqfilmlist: #I converted the frequencies that were strings to floats
-    try:
-        floatlist.append(float(i))
-    except ValueError:
-        pass
-
-
-userinputa = input('IPA character = ') #User inputs the first IPA character to be compared
-userinputb = input('IPA character 2 = ') #User inputs the second IPA character to be compared
-userinputc = input('How many syllables max = ') #User inputs how many syllables maximum the words can have
-userfreq = input('1=low frequency, 2=low-mid frequency 3=mid-high frequency, 4=high frequency, 5=all: ') #User inputs the frequency range 1-5
-userfreq = int(userfreq) #Converting the user input to an integer
-
-
-list1 = []
-list2 = []
-list3 = []
-list4 = []
-list5 = []
-
-for x in range(len(floatlist)): #If the frequency belongs to one of the range, it is placed in the corresponding list
-    if 0 <= floatlist[x] < 5:
-       list1.append(floatlist[x])
-    if 5 <= floatlist[x] < 10:
-        list2.append(floatlist[x])
-    if 10 <= floatlist[x] < 50:
-        list3.append(floatlist[x])
-    if 50 <= floatlist[x] < 35000:
-        list4.append(floatlist[x])
-    if 0 <= floatlist[x] < 35000:
-        list5.append(floatlist[x])
-
-newlist = []
-
-blist = []
-
-def freqwords(a, b, c, d): #it converts back the floats from the list to a string
-    for x in range(len(a)):
-        b.append(str(a[x]))
-    for x in c: #It looks at the values in alist, compares it to the values in blist, and if it finds it, appends the word to newlist so we are left with only words belonging to the frequency range we want
-        for y in range(len(x)):
-            if x[y] in b:
-                d.append(x[0])
-
-if userfreq == 1: #If user inputs 1, it will do the action above to list1, ect...)
-    freqwords(list1, blist, alist, newlist)
-if userfreq == 2:
-    freqwords(list2, blist, alist, newlist)
-if userfreq == 3:
-    freqwords(list3, blist, alist, newlist)
-if userfreq == 4:
-    freqwords(list4, blist, alist, newlist)
-if userfreq == 5:
-    freqwords(list1, blist, alist, newlist)
-
+firstipa = [] #former lista
+secondipa = [] #former listb
+firstword = [] #former listf
+secondword = [] #former listg
 
 for x in range(len(ipalist)): #Loop through the ipalist to look for the user's IPA character
     if userinputa in ipalist[x]: #Whenever the computer encounters a word that contains the IPA character
-        if wordlist[x] in newlist: #If the word is in newlist, meaning it corresponds to the right frequency range
-            if len(re.findall('[-]', ipalist[x])) < int(userinputc)-1:
-                lista.append(ipalist[x]) #It will append it to lista (Name for the list not great)
-                listf.append(wordlist[x])
+        if wordlist[x] in newwordlist: #If the word is in newlist, meaning it corresponds to the right frequency range
+            if len(re.findall('[-]', ipalist[x])) < int(userlength)-1:
+                firstipa.append(ipalist[x]) #It will append it to lista (Name for the list not great)
+                firstword.append(wordlist[x])
     if userinputb in ipalist[x]: #Same process for the second character requested by the user
-        if wordlist[x] in newlist:
-            if len(re.findall('[-]', ipalist[x])) < int(userinputc)-1:
-                listb.append(ipalist[x]) #It is saved in another list called listb (Again the name is not great)
-                listg.append(wordlist[x])
+        if wordlist[x] in newwordlist:
+            if len(re.findall('[-]', ipalist[x])) < int(userlength)-1:
+                secondipa.append(ipalist[x]) #It is saved in another list called listb (Again the name is not great)
+                secondword.append(wordlist[x])
 
-words = []
-wordsb = []
+wordlista = []
+wordlistb = []
 
-for w in range(len(lista)): #Selects words that only differ by one character which should be the one chosen by the user
+for w in range(len(firstipa)): #Selects words that only differ by one character which should be the one chosen by the user
     wcnt = 0
-    worda = lista[w]
-    for x in range(len(listb)):
-        word = listb[x]
-        if len(worda) == len(word):
-            for i in range(len(word)):
-                if worda[i] != word[i]:
+    worda = firstipa[w]
+    for x in range(len(secondipa)):
+        wordb = secondipa[x]
+        if len(worda) == len(wordb):
+            for i in range(len(wordb)):
+                if worda[i] != wordb[i]:
                     wcnt += 1
             if wcnt == 1:
-                words.append(worda)
-                wordsb.append(word)
+                wordlista.append(worda)
+                wordlistb.append(wordb)
 
 def makedict(a, b, c): #Creates dictionaries
     for x in range(len(a)):
         if a[x] in c:
             continue
         else:
-            c[a[x]] = [b[x]]
+            c[a[x]] = b[x]
 
 dict = {}
-dico = {}
+d = {}
 
-makedict(lista, listf, dict) #We make a dictionary for the first character chosen by the user
-makedict(listb, listg, dico) #We make a second dictionary for the second character chosen by the user
+makedict(firstipa, firstword, dict) #We make a dictionary for the first character chosen by the user
+makedict(secondipa, secondword, d) #We make a second dictionary for the second character chosen by the user
 
-listc = []
+finallist = []
 
-for x in range(len(words)): #If the words that match all our criteras are both in the dictionaries, it will output them
-    if words[x] in dict:
-        if wordsb[x] in dico:
-            y = dict.pop(words[x])
-            z = dico.pop(wordsb[x])
+for x in range(len(wordlista)): #If the words that match all our criteras are both in the dictionaries, it will output them
+    if wordlista[x] in dict:
+        if wordlistb[x] in d:
+            y = dict.pop(wordlista[x])
+            z = d.pop(wordlistb[x])
             print()
             print(y, z)
 
-            listc.append(y)
-            listc.append(z)
+            finallist.append(y)
+            finallist.append(z)
 
 #with open("bigram.txt", "w") as output: #This code is if you want to get the output as a txt file on your computer
 #    output.write("\n".join(" ".join(row) for row in zip(*[iter(listc)]*2))) #It will output a bigram
