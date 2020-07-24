@@ -17,7 +17,7 @@ while line:
         if x == True:
             continue
         wordipa = line.split(',')[23]
-        if 'E' in wordipa: #Probably possible to incorporate a def here but I haven't yet figured it out
+        if 'E' in wordipa:
             wordipa = re.sub('E', 'ɛ', wordipa)
         if 'O' in wordipa:
             wordipa = re.sub('O', 'ɔ', wordipa)
