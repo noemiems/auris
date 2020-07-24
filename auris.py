@@ -7,8 +7,7 @@ pdlex.to_csv('lexique.txt')
 lexique = open("lexique.txt")
 line = "XXX"
 wordlist = []
-firstlist = []
-alist = []
+pairlist = []
 
 while line:
     line = lexique.readline()
@@ -31,7 +30,7 @@ while line:
         if '9' in wordipa:
             wordipa = re.sub('9', 'œ', wordipa)
         word = line.split(',')[1]
-        alist.append([wordipa, word])
+        wordlist.append([wordipa, word])
         freqfilm = line.split(',')[7]
         if '.' in freqfilm:
             freq = float(freqfilm)
@@ -40,8 +39,12 @@ while line:
                     if 'y' in wordipa: #Change this for character to compare
                         savedb = word
                         new = re.sub('y', 'u', wordipa) #Change this for character to compare
-                        firstlist.append([new, savedb])
-                        for x in range(len(alist)):
-                            for item in alist[x]:
+                        for x in range(len(wordlist)):
+                            for item in wordlist[x]:
                                 if new == item:
-                                    print(savedb, alist[x][1])
+                                    pair = [savedb, wordlist[x][1]]
+                                    if pair in pairlist :
+                                        continue
+                                    else:
+                                        pairlist.append([savedb, wordlist[x][1]])
+                                        print(savedb, wordlist[x][1])
