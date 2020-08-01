@@ -30,10 +30,10 @@ while line:
         if '9' in wordipa:
             wordipa = re.sub('9', 'œ', wordipa)
         word = line.split(',')[1]
-        wordlist.append([wordipa, word])
         freqfilm = line.split(',')[7]
         if '.' in freqfilm:
             freq = float(freqfilm)
+            wordlist.append([wordipa, word, freq])
             if freq >= 0: #Change this for frequency threshold
                 if len(re.findall('[-]', wordipa)) < 5 : #Change this for word length
                     if 'y' in wordipa: #Change this for character to compare
@@ -42,9 +42,9 @@ while line:
                         for x in range(len(wordlist)):
                             for item in wordlist[x]:
                                 if new == item:
-                                    pair = [savedb, wordlist[x][1]]
+                                    pair = [savedb, [wordlist[x][1], wordlist[x][2]]]
                                     if pair in pairlist :
                                         continue
                                     else:
                                         pairlist.append([savedb, wordlist[x][1]])
-                                        print(savedb, wordlist[x][1])
+                                        print(savedb, freq, ',', wordlist[x][1], wordlist[x][2])
