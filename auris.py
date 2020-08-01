@@ -1,3 +1,10 @@
+freq_threshold = 0
+sound1 = 'y'
+sound2 = 'u'
+word_length = 5 #number of syllabless
+
+
+
 import pandas as pd
 import re
 
@@ -34,11 +41,11 @@ while line:
         if '.' in freqfilm:
             freq = float(freqfilm)
             wordlist.append([wordipa, word, freq])
-            if freq >= 0: #Change this for frequency threshold
-                if len(re.findall('[-]', wordipa)) < 5 : #Change this for word length
-                    if 'y' in wordipa: #Change this for character to compare
+            if freq >= float(freq_threshold):
+                if len(re.findall('[-]', wordipa)) < word_length :
+                    if sound1 in wordipa:
                         savedb = word
-                        new = re.sub('y', 'u', wordipa) #Change this for character to compare
+                        new = re.sub(sound1, sound2, wordipa)
                         for x in range(len(wordlist)):
                             for item in wordlist[x]:
                                 if new == item:
