@@ -97,9 +97,9 @@ for sound in pairslist:
                             random.shuffle(currentpair)
                             random.shuffle(humanvoices)
                             model["stimuli"] = [
-                            {"say": currentpair[0], "humanvoice": humanvoices[0], "url": "human/{voice}-{number}.mp3".format(voice = humanvoices[0], number = humanwordsdict.get(currentpair[0]))},
-                            {"say": currentpair[1], "humanvoice": humanvoices[1], "url": "human/{voice}-{number}.mp3".format(voice = humanvoices[1], number = humanwordsdict.get(currentpair[1]))},
-                            {"say": currentpair[2], "humanvoice": humanvoices[2], "url": "human/{voice}-{number}.mp3".format(voice = humanvoices[2], number = humanwordsdict.get(currentpair[2]))}
+                            {"say": currentpair[0], "humanvoice": humanvoices[0], "url": "human/{voice}/{number}.mp3".format(voice = humanvoices[0], number = humanwordsdict.get(currentpair[0]))},
+                            {"say": currentpair[1], "humanvoice": humanvoices[1], "url": "human/{voice}/{number}.mp3".format(voice = humanvoices[1], number = humanwordsdict.get(currentpair[1]))},
+                            {"say": currentpair[2], "humanvoice": humanvoices[2], "url": "human/{voice}/{number}.mp3".format(voice = humanvoices[2], number = humanwordsdict.get(currentpair[2]))}
                             ]
                             humanvoices.pop(humanvoices.index(extravoice))
                             currentpair.append("uv")
@@ -129,7 +129,7 @@ for sound in pairslist:
                             chosensay = random.choice(currentpair)
                             chosenvoice = random.choice(humanvoices)
                             model["stimuli"] = [
-                            {"say": chosensay, "humanvoice": chosenvoice, "url": "human/{name}-{number}.mp3".format(name = chosenvoice, number = humanwordsdict.get(chosensay))}
+                            {"say": chosensay, "humanvoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = humanwordsdict.get(chosensay))}
                             ], random.choice(currentpair)
                             currentpair.append("uv")
                             if model["stimuli"][1] == chosensay:
@@ -163,8 +163,8 @@ for sound in pairslist:
                                 model["key"] = 2
                             random.shuffle(humanvoices)
                             model["stimuli"] = [
-                            {"say": chosensay1, "humanvoice": humanvoices[0], "url": "human/{name}-{number}.mp3".format(name = humanvoices[0], number = humanwordsdict.get(chosensay1))},
-                            {"say": chosensay2, "humanvoice": humanvoices[1], "url": "human/{name}-{number}.mp3".format(name = humanvoices[1], number = humanwordsdict.get(chosensay2))}
+                            {"say": chosensay1, "humanvoice": humanvoices[0], "url": "human/{name}/{number}.mp3".format(name = humanvoices[0], number = humanwordsdict.get(chosensay1))},
+                            {"say": chosensay2, "humanvoice": humanvoices[1], "url": "human/{name}/{number}.mp3".format(name = humanvoices[1], number = humanwordsdict.get(chosensay2))}
                             ]
                             currentpair.append("uv")
 
@@ -190,7 +190,7 @@ for sound in pairslist:
                             chosenword = random.choice(currentpair)
                             chosenvoice = random.choice(humanvoices)
                             model["stimuli"] = [
-                            {"say": chosenword, "humanvoice": chosenvoice, "url": "human/{name}-{number}.mp3".format(name = chosenvoice, number = humanwordsdict.get(chosenword))},
+                            {"say": chosenword, "humanvoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = humanwordsdict.get(chosenword))},
                             currentpair[0], 
                             currentpair[1]
                             ]
