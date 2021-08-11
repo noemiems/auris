@@ -93,8 +93,6 @@ for sound in pairslist:
                             {"say": currentpair[1], "voice": voice2 }, 
                             {"say": currentpair[2], "voice": voice3 }
                             ]
-                            random.shuffle(currentpair)
-                            currentpair.append("tv")
                             if currentpair[0] == currentpair[1]:
                                 model["key"] = 3
                             if currentpair[1] == currentpair[2]:
@@ -102,6 +100,7 @@ for sound in pairslist:
                             if currentpair[0] == currentpair[2]:
                                 model["key"] = 2
                             currentpair.pop(currentpair.index(extraword))
+                            currentpair.append("tv")
 
                         if "uv" in currentpair: 
                             #Add an extra word to the pair and shuffle
