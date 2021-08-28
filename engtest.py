@@ -88,11 +88,31 @@ for sound in pairslist:
                                     possiblevoices.append(voice1)
                                     possiblevoices.append(voice2)
                             random.shuffle(currentpair)
-                            model["stimuli"] = [
-                            {"say": currentpair[0], "voice": voice1 }, 
-                            {"say": currentpair[1], "voice": voice2 }, 
-                            {"say": currentpair[2], "voice": voice3 }
-                            ]
+                            if "live" not in currentpair:
+                                model["stimuli"] = [
+                                {"say": currentpair[0], "voice": voice1 }, 
+                                {"say": currentpair[1], "voice": voice2 }, 
+                                {"say": currentpair[2], "voice": voice3 }
+                                ]
+                            else:
+                                if currentpair[0] == "live":
+                                    model["stimuli"] = [
+                                    {"say": currentpair[0], "sayAs": "liv", "voice": voice1 }, 
+                                    {"say": currentpair[1], "voice": voice2 }, 
+                                    {"say": currentpair[2], "voice": voice3 }
+                                    ]
+                                if currentpair[1] == "live":
+                                    model["stimuli"] = [
+                                    {"say": currentpair[0], "voice": voice1 }, 
+                                    {"say": currentpair[1], "sayAs": "liv", "voice": voice2 }, 
+                                    {"say": currentpair[2], "voice": voice3 }
+                                    ]
+                                if currentpair[2] == "live":
+                                    model["stimuli"] = [
+                                    {"say": currentpair[0], "voice": voice1 }, 
+                                    {"say": currentpair[1], "voice": voice2 }, 
+                                    {"say": currentpair[2], "sayAs": "liv", "voice": voice3 }
+                                    ]
                             if currentpair[0] == currentpair[1]:
                                 model["key"] = 3
                             if currentpair[1] == currentpair[2]:
@@ -116,11 +136,31 @@ for sound in pairslist:
                             voice1 = humanvoices[0]
                             voice2 = humanvoices[1]
                             voice3 = humanvoices[2]
-                            model["stimuli"] = [
-                            {"say": currentpair[0], "humanVoice": voice1, "url": "human/{voice}/{number}.mp3".format(voice = voice1, number = items_number.get(currentpair[0]))},
-                            {"say": currentpair[1], "humanVoice": voice2, "url": "human/{voice}/{number}.mp3".format(voice = voice2, number = items_number.get(currentpair[1]))},
-                            {"say": currentpair[2], "humanVoice": voice3, "url": "human/{voice}/{number}.mp3".format(voice = voice3, number = items_number.get(currentpair[2]))}
-                            ]
+                            if "live" not in currentpair:
+                                model["stimuli"] = [
+                                {"say": currentpair[0], "humanVoice": voice1, "url": "human/{voice}/{number}.mp3".format(voice = voice1, number = items_number.get(currentpair[0]))},
+                                {"say": currentpair[1], "humanVoice": voice2, "url": "human/{voice}/{number}.mp3".format(voice = voice2, number = items_number.get(currentpair[1]))},
+                                {"say": currentpair[2], "humanVoice": voice3, "url": "human/{voice}/{number}.mp3".format(voice = voice3, number = items_number.get(currentpair[2]))}
+                                ]
+                            else:
+                                if currentpair[0] == "live":
+                                    model["stimuli"] = [
+                                    {"say": currentpair[0], "sayAs": "liv", "humanVoice": voice1, "url": "human/{voice}/{number}.mp3".format(voice = voice1, number = items_number.get(currentpair[0]))},
+                                    {"say": currentpair[1], "humanVoice": voice2, "url": "human/{voice}/{number}.mp3".format(voice = voice2, number = items_number.get(currentpair[1]))},
+                                    {"say": currentpair[2], "humanVoice": voice3, "url": "human/{voice}/{number}.mp3".format(voice = voice3, number = items_number.get(currentpair[2]))}
+                                    ]
+                                if currentpair[1] == "live":
+                                    model["stimuli"] = [
+                                    {"say": currentpair[0], "humanVoice": voice1, "url": "human/{voice}/{number}.mp3".format(voice = voice1, number = items_number.get(currentpair[0]))},
+                                    {"say": currentpair[1], "sayAs": "liv", "humanVoice": voice2, "url": "human/{voice}/{number}.mp3".format(voice = voice2, number = items_number.get(currentpair[1]))},
+                                    {"say": currentpair[2], "humanVoice": voice3, "url": "human/{voice}/{number}.mp3".format(voice = voice3, number = items_number.get(currentpair[2]))}
+                                    ]
+                                if currentpair[2] == "live":
+                                    model["stimuli"] = [
+                                    {"say": currentpair[0], "humanVoice": voice1, "url": "human/{voice}/{number}.mp3".format(voice = voice1, number = items_number.get(currentpair[0]))},
+                                    {"say": currentpair[1], "humanVoice": voice2, "url": "human/{voice}/{number}.mp3".format(voice = voice2, number = items_number.get(currentpair[1]))},
+                                    {"say": currentpair[2], "sayAs": "liv", "humanVoice": voice3, "url": "human/{voice}/{number}.mp3".format(voice = voice3, number = items_number.get(currentpair[2]))}
+                                    ]
                             humanvoices.pop(humanvoices.index(extravoice))
                             currentpair.append("uv")
                             if currentpair[0] == currentpair[1]:
@@ -140,7 +180,10 @@ for sound in pairslist:
                                 possiblevoices = voicesdict[currentpair[0]]
                             else:
                                 possiblevoices = voicesdict[currentpair[1]]
-                            model["stimuli"] = {"say": chosensay, "voice": random.choice(possiblevoices) }, random.choice(currentpair)
+                            if chosensay != "live":
+                                model["stimuli"] = {"say": chosensay, "voice": random.choice(possiblevoices) }, random.choice(currentpair)
+                            else:
+                                model["stimuli"] = {"say": chosensay, "sayAs": "liv", "voice": random.choice(possiblevoices) }, random.choice(currentpair)
                             currentpair.append("tv")
                             if model["stimuli"][1] == chosensay:
                                 model["key"] = 1
@@ -150,7 +193,10 @@ for sound in pairslist:
                             currentpair.pop(2)
                             chosensay = random.choice(currentpair)
                             chosenvoice = random.choice(humanvoices)
-                            model["stimuli"] = {"say": chosensay, "humanVoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = items_number.get(chosensay))}, random.choice(currentpair)
+                            if chosensay != "live":
+                                model["stimuli"] = {"say": chosensay, "humanVoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = items_number.get(chosensay))}, random.choice(currentpair)
+                            else:
+                                model["stimuli"] = {"say": chosensay, "sayAs": "liv", "humanVoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = items_number.get(chosensay))}, random.choice(currentpair)
                             currentpair.append("uv")
                             if model["stimuli"][1] == chosensay:
                                 model["key"] = 1
@@ -163,7 +209,6 @@ for sound in pairslist:
                             currentpair.pop(2)
                             chosensay1 = random.choice(currentpair)
                             chosensay2 = random.choice(currentpair)
-
                             #voices
                             if currentpair[0] in voicesdict:
                                 possiblevoices = voicesdict[currentpair[0]]
@@ -177,10 +222,27 @@ for sound in pairslist:
                                 model["key"] = 1
                             else:
                                 model["key"] = 2
-                            model["stimuli"] = [
-                            {"say": chosensay1, "voice": voice1 },
-                            {"say": chosensay2, "voice": voice2 }
-                            ]
+                            if "live" not in currentpair:
+                                model["stimuli"] = [
+                                {"say": chosensay1, "voice": voice1 },
+                                {"say": chosensay2, "voice": voice2 }
+                                ]
+                            else:
+                                if chosensay1 == "live" and chosensay2 != "live":
+                                    model["stimuli"] = [
+                                    {"say": chosensay1, "sayAs": "liv", "voice": voice1 },
+                                    {"say": chosensay2, "voice": voice2 }
+                                    ]
+                                if chosensay1 != "live" and chosensay2 == "live":
+                                    model["stimuli"] = [
+                                    {"say": chosensay1, "voice": voice1 },
+                                    {"say": chosensay2, "sayAs": "liv", "voice": voice2 }
+                                    ]
+                                if chosensay1 == "live" and chosensay2 == "live":
+                                    model["stimuli"] = [
+                                    {"say": chosensay1, "sayAs": "liv", "voice": voice1 },
+                                    {"say": chosensay2, "sayAs": "liv", "voice": voice2 }
+                                    ]
                             currentpair.append("tv")
                         if "uv" in currentpair:
                             currentpair.pop(2)
@@ -191,10 +253,27 @@ for sound in pairslist:
                                 model["key"] = 1
                             else:
                                 model["key"] = 2
-                            model["stimuli"] = [
-                            {"say": chosensay1, "humanVoice": humanvoices[0], "url": "human/{name}/{number}.mp3".format(name = humanvoices[0], number = items_number.get(chosensay1))},
-                            {"say": chosensay2, "humanVoice": humanvoices[1], "url": "human/{name}/{number}.mp3".format(name = humanvoices[1], number = items_number.get(chosensay2))}
-                            ]
+                            if "live" not in currentpair:
+                                model["stimuli"] = [
+                                {"say": chosensay1, "humanVoice": humanvoices[0], "url": "human/{name}/{number}.mp3".format(name = humanvoices[0], number = items_number.get(chosensay1))},
+                                {"say": chosensay2, "humanVoice": humanvoices[1], "url": "human/{name}/{number}.mp3".format(name = humanvoices[1], number = items_number.get(chosensay2))}
+                                ]
+                            else:
+                                if chosensay1 == "live" and chosensay2 != "live":
+                                    model["stimuli"] = [
+                                    {"say": chosensay1, "sayAs": "liv", "humanVoice": humanvoices[0], "url": "human/{name}/{number}.mp3".format(name = humanvoices[0], number = items_number.get(chosensay1))},
+                                    {"say": chosensay2, "humanVoice": humanvoices[1], "url": "human/{name}/{number}.mp3".format(name = humanvoices[1], number = items_number.get(chosensay2))}
+                                    ]
+                                if chosensay1 != "live" and chosensay2 == "live":
+                                    model["stimuli"] = [
+                                    {"say": chosensay1, "humanVoice": humanvoices[0], "url": "human/{name}/{number}.mp3".format(name = humanvoices[0], number = items_number.get(chosensay1))},
+                                    {"say": chosensay2, "sayAs": "liv", "humanVoice": humanvoices[1], "url": "human/{name}/{number}.mp3".format(name = humanvoices[1], number = items_number.get(chosensay2))}
+                                    ]
+                                if chosensay1 == "live" and chosensay2 == "live":
+                                    model["stimuli"] = [
+                                    {"say": chosensay1, "sayAs": "liv", "humanVoice": humanvoices[0], "url": "human/{name}/{number}.mp3".format(name = humanvoices[0], number = items_number.get(chosensay1))},
+                                    {"say": chosensay2, "sayAs": "liv", "humanVoice": humanvoices[1], "url": "human/{name}/{number}.mp3".format(name = humanvoices[1], number = items_number.get(chosensay2))}
+                                    ]
                             currentpair.append("uv")
 
                 if model.get("type") == "which":
@@ -207,11 +286,18 @@ for sound in pairslist:
                                 possiblevoices = voicesdict[currentpair[0]]
                             else:
                                 possiblevoices = voicesdict[currentpair[1]]
-                            model["stimuli"] = [
-                                {"say": chosenword, "voice": random.choice(possiblevoices)},
-                                currentpair[0], 
-                                currentpair[1]
-                                ]
+                            if chosenword != "live":
+                                model["stimuli"] = [
+                                    {"say": chosenword, "voice": random.choice(possiblevoices)},
+                                    currentpair[0], 
+                                    currentpair[1]
+                                    ]
+                            else:
+                                model["stimuli"] = [
+                                    {"say": chosenword, "sayAs": "liv", "voice": random.choice(possiblevoices)},
+                                    currentpair[0], 
+                                    currentpair[1]
+                                    ]  
                             if chosenword == currentpair[0]:
                                 model["key"] = 1
                             else:
@@ -222,11 +308,18 @@ for sound in pairslist:
                             random.shuffle(currentpair)
                             chosenword = random.choice(currentpair)
                             chosenvoice = random.choice(humanvoices)
-                            model["stimuli"] = [
-                            {"say": chosenword, "humanVoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = items_number.get(chosenword))},
-                            currentpair[0], 
-                            currentpair[1]
-                            ]
+                            if chosenword != "live":
+                                model["stimuli"] = [
+                                {"say": chosenword, "humanVoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = items_number.get(chosenword))},
+                                currentpair[0], 
+                                currentpair[1]
+                                ]
+                            else:
+                                model["stimuli"] = [
+                                {"say": chosenword, "sayAs": "liv", "humanVoice": chosenvoice, "url": "human/{name}/{number}.mp3".format(name = chosenvoice, number = items_number.get(chosenword))},
+                                currentpair[0], 
+                                currentpair[1]
+                                ]
                             if chosenword == currentpair[0]:
                                 model["key"] = 1
                             else:
